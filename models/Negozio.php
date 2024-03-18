@@ -208,11 +208,10 @@ class Negozio implements JsonSerializable
     public function getSconto($ordine){
         $somma_prezzi_listino = 0;
         $somma_prezzi_vendita = 0;
-        $arrayArticoli = $this->getArticoli();
         $arrayUguali = [];
         foreach ($ordine->getArticoli_Venduti() as $articolo_venduto) {
             $somma_prezzi_vendita += $articolo_venduto->getPrezzo_di_vendita();
-            foreach ($arrayArticoli as $articolo) {
+            foreach ($this->getArticoli() as $articolo) {
                 if($articolo->getId() == $articolo_venduto->getId()) {
                     array_push($arrayUguali, $articolo);
                 }
@@ -221,7 +220,7 @@ class Negozio implements JsonSerializable
         foreach ($arrayUguali as $articolo_in_comune) {
             $somma_prezzi_listino += $articolo_in_comune->getPrezzo_di_listino();
         }
-        return $somma_prezzi_listino - $somma_prezzi_vendita;
+        return $somma_prezzi_listino-$somma_prezzi_vendita;
     }
 
     public function jsonSerialize()
