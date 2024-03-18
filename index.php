@@ -28,6 +28,6 @@ $app->get("/ordini/{numero_ordine}/articoli_venduti", "OrdineController:articoli
 $app->get("/ordini/{numero_ordine}/articoli_venduti/{id}", "OrdineController:dettagli");
 
 $app->get("/ordini/{numero_ordine}/verifica", "OrdineController:verifica");
-$app->get("/ordini/{numero_ordine}/sconto", "OrdineController:sconto");
+$app->get("/ordini/{numero_ordine}/sconto", "NegozioController:sconto");
 
 $app->run();

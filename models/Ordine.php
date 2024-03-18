@@ -44,6 +44,33 @@ class Ordine implements JsonSerializable{
         return array_push($this->articoli_venduti, $articolo_venduto);
     }
 
+    public function findByIndexVenduto($id)
+    {
+        $in = false;
+        foreach ($this->getArticoli_Venduti() as $articolo_venduto) {
+            if ($articolo_venduto->getId() == $id) {
+                return $articolo_venduto;
+            }
+        }
+        if (!$in) {
+            return null;
+        }
+    }
+
+    public function verifySum(){
+        $importo_totale_articoli = 0;
+        foreach ($this->getArticoli_venduti() as $articolo_venduto) {
+            $importo_totale_articoli += $articolo_venduto->getPrezzo_di_vendita();
+        }
+        if($this->getImporto_totale() == $importo_totale_articoli){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+
     public function jsonSerialize(){
         $attrs = [];
         $class_vars = get_class_vars(get_class($this));

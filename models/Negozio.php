@@ -24,10 +24,10 @@ class Negozio implements JsonSerializable
         $articolo_venduto2 = new Articolo_venduto(15, 20.78, 210);
         $articolo_venduto3 = new Articolo_venduto(16, 25.13, 220);
         $articolo_venduto4 = new Articolo_venduto(17, 100.97, 200);
-        /*$ordine1->addArticoli_venduti($articolo_venduto1);
+        $ordine1->addArticoli_venduti($articolo_venduto1);
         $ordine1->addArticoli_venduti($articolo_venduto2);
         $ordine1->addArticoli_venduti($articolo_venduto3);
-        $ordine1->addArticoli_venduti($articolo_venduto4);*/
+        $ordine1->addArticoli_venduti($articolo_venduto4);
 
         $ordine2 = new OrdineFisico(110, "10-06-2012", 100.12, "contanti");
         $articolo_venduto5 = new Articolo_venduto(18, 34.36, 150);
@@ -38,8 +38,8 @@ class Negozio implements JsonSerializable
         $ordine2->addArticoli_venduti($articolo_venduto7);
 
         $ordine3 = new OrdineFisico(101, "08-11-2010", 64.87, "contanti");
-        $articolo_venduto8 = new Articolo_venduto(21, 29.37, 250);
-        $articolo_venduto9 = new Articolo_venduto(22, 39.78, 290);
+        $articolo_venduto8 = new Articolo_venduto(21, 30.87, 250);
+        $articolo_venduto9 = new Articolo_venduto(22, 34, 290);
         $ordine3->addArticoli_venduti($articolo_venduto8);
         $ordine3->addArticoli_venduti($articolo_venduto9);
 
@@ -203,6 +203,25 @@ class Negozio implements JsonSerializable
         if (!$in) {
             return null;
         }
+    }
+
+    public function getSconto($ordine){
+        $somma_prezzi_listino = 0;
+        $somma_prezzi_vendita = 0;
+        $arrayArticoli = $this->getArticoli();
+        $arrayUguali = [];
+        foreach ($ordine->getArticoli_Venduti() as $articolo_venduto) {
+            $somma_prezzi_vendita += $articolo_venduto->getPrezzo_di_vendita();
+            foreach ($arrayArticoli as $articolo) {
+                if($articolo->getId() == $articolo_venduto->getId()) {
+                    array_push($arrayUguali, $articolo);
+                }
+            }
+        }
+        foreach ($arrayUguali as $articolo_in_comune) {
+            $somma_prezzi_listino += $articolo_in_comune->getPrezzo_di_listino();
+        }
+        return $somma_prezzi_listino - $somma_prezzi_vendita;
     }
 
     public function jsonSerialize()

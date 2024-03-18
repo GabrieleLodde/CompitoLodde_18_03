@@ -58,4 +58,28 @@ class NegozioController{
             return $response->withHeader("Content-type", "application/json")->withStatus(200);
         }
     }
+
+    public function sconto(Request $request, Response $response, $args){
+        $params = isset($_GET['numero_ordine'])?$_GET:null;
+        $numero_ordine = isset($args['numero_ordine'])?$args['numero_ordine']:$params['numero_ordine'];
+
+        if (!is_numeric($numero_ordine)) {
+            $error_message = "Il numero ordine inserito non ha formato valido!";
+            $response->getBody()->write(json_encode($error_message, JSON_PRETTY_PRINT));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(404);
+        }
+
+        $negozio = new Negozio("MEDIAWORLD", "3334441234", "Via del Filarete", "https://www.mediaworld.it/", "12121212");
+        $dati_ordine = $negozio->findByNumber($numero_ordine);
+        if(is_null($dati_ordine)){
+            $error_message = "Ordine non presente, quindi non lo sconto non ha esito!";
+            $response->getBody()->write(json_encode($error_message, JSON_PRETTY_PRINT));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(404);
+        }
+        else{
+            $result = $negozio->getSconto($dati_ordine);
+            $response->getBody()->write(json_encode($result, JSON_PRETTY_PRINT));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(200);
+        }
+    }
 }
