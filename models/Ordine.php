@@ -40,7 +40,7 @@ class Ordine implements JsonSerializable{
         return $this->articoli_venduti;
     }
 
-    public function addOrdine($articolo_venduto){
+    public function addArticoli_venduti($articolo_venduto){
         return array_push($this->articoli_venduti, $articolo_venduto);
     }
 

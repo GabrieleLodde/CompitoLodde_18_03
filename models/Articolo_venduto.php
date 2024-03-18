@@ -1,5 +1,5 @@
 <?php 
-class Articolo implements JsonSerializable{
+class Articolo_venduto implements JsonSerializable{
     protected $id;
     protected $prezzo_di_vendita;
     protected $quantita_acquistata;
